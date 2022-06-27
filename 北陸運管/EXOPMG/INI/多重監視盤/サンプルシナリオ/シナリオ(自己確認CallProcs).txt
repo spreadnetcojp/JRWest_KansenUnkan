@@ -1,0 +1,22 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	000-000-0000-00 Call PrintSum, 3, 5
+	000-000-0000-00 Evaluate $SetVal<var0; 0>
+	000-000-0000-00 Call GetVal, var0
+	000-000-0000-00 Print $Val<var0>
+EndProc
+
+Proc PrintSum(arg0, arg1)
+	000-000-0000-00 Print $Add<$Val<arg0>; $Val<arg1>>
+EndProc
+
+Proc GetVal(*res)
+	000-000-0000-00 Call GetThree, *res
+EndProc
+
+Proc GetThree(*res)
+	000-000-0000-00 Evaluate $SetVal<var1; 3>
+	000-000-0000-00 Evaluate $SetRef<var2; var1>
+	000-000-0000-00 Evaluate $SetVal<*res; $Val<*var2>>
+EndProc

@@ -1,0 +1,27 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	#Start
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）電源入
+	000-000-0000-00 RegDisconnectProc 0, 通信異常時処理
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 ActiveOne サンプルデータ\異常データ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 WaitUntil 01:50:00
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）締切
+	000-000-0000-00 ActiveOne サンプルデータ\操作ログ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ActiveOne サンプルデータ\業務前認証ログ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 10s
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）電源切
+	000-000-0000-00 UnregDisconnectProc 0
+	000-000-0000-00 Disconnect
+	000-000-0000-00 WaitUntil 05:00:00
+	000-000-0000-00 GoTo Start
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

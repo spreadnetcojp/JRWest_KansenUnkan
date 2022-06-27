@@ -1,0 +1,50 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	#シナリオ開始
+	000-000-0000-00 RegDisconnectProc 6, 通信異常時処理
+	000-000-0000-00 RegPassiveUllProc 6, 別集札データULL要求Comp.dat, 別集札データULL要求Mask.dat, -1,, サンプルデータ\別集札データ.dat,, 0s, 60s, 通信異常時処理, 通信異常時処理, 別集札データ送信後処理
+	070-003-0000-00 Connect OnComStarted, OnError
+	070-003-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 5s
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 RegTimerProc 10, 0, 80s, バージョン情報送信処理
+	000-000-0000-00 WaitForPassiveUll 別集札データULL要求Comp.dat, 別集札データULL要求Mask.dat, -1,, サンプルデータ\別集札データ.dat,, 0s, 60s, 2m, OnError, OnError, On別集札データ収集なし
+	000-000-0000-00 RegPassiveUllProcToNak 5, 別集札データULL要求Comp.dat, 別集札データULL要求Mask.dat, -1, 101(`-)/, 別集札データ送信拒否後処理
+	000-000-0000-00 Wait 2m
+	000-000-0000-00 UnregPassiveUllProc 5
+	000-000-0000-00 Wait 2m
+	000-000-0000-00 FinishScenario
+	#OnError
+	000-000-0000-00 AbortScenario
+	#On別集札データ収集なし
+	070-003-0000-00 ActiveOne サンプルデータ\異常データ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 UnregDisconnectProc 6
+	000-000-0000-00 Disconnect
+	000-000-0000-00 GoTo シナリオ開始
+EndProc
+
+Proc バージョン情報送信処理
+	000-000-0000-00 ActiveUll AE, P_W_%3R%3S%4C%2UVER.DAT, サンプルデータ\プログラムバージョン情報(W).dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ActiveUll AF, M_G_%T3R%T3S%T4C%T2UVER.DAT, サンプルデータ\マスタバージョン情報(G).dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 別集札データ送信後処理
+	000-000-0000-00 Print でつ ｛送信しました）
+EndProc
+
+Proc 別集札データ送信拒否後処理
+	070-003-0000-00 ActiveOne サンプルデータ\異常データ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

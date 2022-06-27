@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2BBAEDB8-35D9-4D3E-A548-07E0984E4369}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>JR.ExOpmg.SampleDsClientApp.My.MyApplication</StartupObject>
+    <RootNamespace>JR.ExOpmg.SampleDsClientApp</RootNamespace>
+    <AssemblyName>ExOpmgSampleDsClientApp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\..\OBJ\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\OBJ\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>Off</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="ClientAppInternalMessageKind.vb" />
+    <Compile Include="Config.vb" />
+    <Compile Include="FrmBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBaseMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstInputData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstInputList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstOrderDelivery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lexis.vb" />
+    <Compile Include="MasProDllInvokeRequest.vb" />
+    <Compile Include="MasProDllInvokeResponse.vb" />
+    <Compile Include="MasProUllRequest.vb" />
+    <Compile Include="MasProUllResponse.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OpClientTelegrapher.vb" />
+    <Compile Include="OpClientUtil.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmBase.resx">
+      <DependentUpon>FrmBase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBaseMenu.resx">
+      <DependentUpon>FrmBaseMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstInputData.resx">
+      <DependentUpon>FrmMstInputData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstInputList.resx">
+      <DependentUpon>FrmMstInputList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstMenu.resx">
+      <DependentUpon>FrmMstMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstOrderDelivery.resx">
+      <DependentUpon>FrmMstOrderDelivery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ClientTelegrapher\ClientTelegrapher.vbproj">
+      <Project>{E8CF2FF2-A429-4D41-AADB-C49BC71C4F23}</Project>
+      <Name>ClientTelegrapher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Common.vbproj">
+      <Project>{74141547-99D4-4821-B3B7-E4422C221204}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EkCommon\EkCommon.vbproj">
+      <Project>{47C1D9E8-6442-4251-BF62-11889A7C9C7F}</Project>
+      <Name>EkCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EkTelegrams\EkTelegrams.vbproj">
+      <Project>{B634E3BC-57A8-411B-8A51-7453E3EB7138}</Project>
+      <Name>EkTelegrams</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITelegrams\ITelegrams.vbproj">
+      <Project>{F7A64AB3-58DA-4D35-8FFA-C9DAF148B724}</Project>
+      <Name>ITelegrams</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\InternalMessages\InternalMessages.vbproj">
+      <Project>{4F07E5B6-04D9-4CDE-A885-2C5F07991514}</Project>
+      <Name>InternalMessages</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,163 @@
+
+--2017/05/30
+
+◆以下、シミュレータ類に適用した修正です。MasterConverterAppやMaintenanceToolAppには未適用です。
+
+OnClosed -> OnFormClosed
+※ Application.Exit() でも呼ばれることだけがメリットだが、念のため、OnClosed が廃止されることに備える。
+※ これなら、ダイアログを開いたまま Windows をシャットダウンしたとしても、間違いなく呼ばれるはず。
+
+Logの拡張出力用デリゲートで Form の破棄後に BeginInvoke() が行われてしまっている。
+その際に発生する例外を握りつぶす対策も施した上で、
+他のスレッドが無くなった時点で Log.SetOptionalWriter(Nothing) を行うようにする。
+
+自プロセスが使うつもりなら、MessageQueue.Create() の戻り値を有効活用する。
+
+メッセージボックスを表示し得るような初期処理は、たとえプロセス内でSharedなものであっても、
+Formアプリのフレームワークの意図に従い、メインFormのOnShownなどから行うようにする。
+メッセージボックスの所属の分かりにくさや、OpenFileDialog の表示位置などは
+これにより改善される。悪い点もあるが、それは TODO とする。
+この改造で、Mainは、ロードした情報をFormのコンストラクタに渡すことがなくなり、
+Formのコンストラクタは、MyBase.New（暗黙の場合もある）とInitializeComponentを実行するだけに
+なる可能性が高いが、そうなった場合、デザイナで作った（DesignerGenerated属性つきの）Formなら
+コンストラクタの記述は省略する方針とする。
+
+OnShown などでメッセージボックス表示のためのメッセージループが実行される際、
+周期的な処理のための Form.Timer が有効になっていると、そのTickイベントハンドラが
+実行されることになり、各種初期化が済んでいないのでやっかいなことになる。
+よって、周期的な処理のための Form.Timer は、OnShown の最後に開始し、
+OnFormClosedの最初に停止させる。
+デザイナが出力したソースから"Timer.Enabled"を検索。
+
+MyBase.OnShown() のタイミングは、特に理由がなければ OnShown の始めに統一。
+
+事前に別のダイアログを出すことがなくなるので、起動直後のメインFormのActivate()は除去する。
+
+Main でメッセージループ内からの例外を捕捉した際、Application.Exit() はやめて、oForm.Close() を行うようにする。
+
+MessageQueue の Close は、破棄まで行うわけではないので、Form の破棄に合わせて実施するものは、意味を尊重して Dispose に変更。
+※ 現状で作成と削除を繰り返すような Form でなくても、何に転用されるかかわらないので、Form の Controls にアタッチされていない
+Form 用の Disposable なオブジェクトは、手動で Dispose しておく方針である。
+※ Form と連動している（参照に WithEvents をつけているし、SynchronizingObject プロパティに Form をセットしているし、
+BeginReceive を呼んで背後での処理も開始させている）のに、勝手に Close や Dispose してよいのか不安になるが、
+MyBase.OnFormClosed() の前に Dispose してよさそう。
+MessageQueue クラスのソースを見る限り、BeginReceive で AsyncReceive を開始した後、ワーカースレッドで実行される完了ハンドラで
+Form のイベントハンドラの BeginInvoke が行うことになるので、本来的にそうするべきと思われる。
+BeginInvoke の際に発生する例外（典型的には BeginInvoke の主語となる Form の ObjectDisposedException と思われる）を
+握りつぶすように修正が行われている（Microsoft 自身は、この例外が漏れ出すことを「フレームワーク側の」深刻な問題と
+とらえているようである）が、BeginInvoke の前に MessageQueue オブジェクトの非 volatile なメンバを参照しているし、
+本来的には、メインスレッドが MessageQueue オブジェクトに変更をかけ得る時点（Dispose の実行中、Form の中で Dipose しない
+コーディングなら、Form 破棄後の時点）で、ここが実行されるべきではない。
+すなわち、Form の破棄後に AsyncReceive の完了ハンドラが呼び出されないよう、Form が生きているうちに MessageQueue の
+Dispose を呼び出しておくのが正解と思われる。
+なお、MessageQueue の Dipose は、まず Unmanaged な MSMQ のための読出しハンドラを Close した上で
+（すなわち Receive が完了しない状態になってから）、AsyncReceive ハンドラから参照される得るフィールドを
+変更しているので、BeginReceive による受信処理が未完了の時点で非同期に呼び出しても構わない
+（限定的な意味でスレッドセーフ）と思われる。
+
+MessageQueue が使えなくてもアプリを終了させない場合は、出力するログの種類を変更する。
+変更前： Log.Fatal("Unwelcome Exception caught.", ex)
+変更後： Log.Error("Exception caught.", ex)
+※ アプリを終了させる（キューが必須である）場合は、Fatal のままとする。メッセージボックスの種類も同様。
+
+パスの長さが原因で MessageQueue の削除が失敗した場合、
+Log.Fatal で記録し、メッセージボックスを表示する。
+MessageQueue.Exists() は使えないので、作っていない場合も
+削除を試みることになるが、その際の例外は念のため Log.Error で記録する。
+
+単一ウィンドウのツールにおいて、「画面表示処理開始」などのログは無意味なので廃止。
+
+CSV の読み込みは TextFieldParser を利用するように統一。
+VisualBasic 用なので嫌だったが、それを言い出すと組み込みのキャストなど、有用なものまで避けるべきということになる。
+
+アプリの状態を xml に書き出す際に作成している XmlWriterSettings が未使用である。
+これを指定しなくても utf-8 になるので、作成しないようにする。
+
+xml ファイルの URI を作成する局面が、複数のメソッド内に登場するようになるので、
+ini ファイルのパスではなく exe のパスを使うように変更。
+どのみちディレクトリ部分は削るので、作業ディレクトリに exe がなくても大丈夫。
+変更前： Path.ChangeExtension(Path.GetFileName(sIniFilePath), ".xml")
+変更後： Path.ChangeExtension(Path.GetFileName(Application.ExecutablePath), ".xml")
+
+各種コントロールのプロパティの初期値について、Form のコンストラクタでセットする場合と
+Form の OnShown でセットするようにした場合では、イベントハンドラの呼び出しタイミングが
+異なる可能性がある。
+次のメッセージ処理が実行されるまで保留になっていたのが、
+プロパティのセッターの中から呼び出されるようになるなど。
+よって、イベントハンドラがその場で呼び出されない（初期化完了後に
+呼び出される）ことに依存している実装は修正する。
+
+	※ もしかすると、イベントハンドラの呼び出されるタイミングには、
+	これといった厳密な仕様がないのかもしれない。
+	Win32 のメッセージキュー（呼び出しを保留するのに必須である）のスロット数や
+	メッセージループを実行し得るメソッド呼び出しの有無（呼び出すとして、
+	そのメソッドが実際にメッセージループを実行してしまう条件）に依存するなど。
+
+	少なくとも .NET 4.6 の CheckBox については、
+	コンストラクタで変更した際も、その場で（CheckBox の set_Checked の呼び出しの中で）
+	イベントハンドラが呼ばれてしまう。
+	UiState から代入した値をイベントハンドラで UiState に書き戻すことになったりして、無駄である。
+
+	たちが悪いのは、イベントハンドラの中で未初期化の部分にアクセスすることになる場合。
+	たとえば、DummyKanshiban において、DataGridView の行の追加処理をコンストラクタから
+	OnShown に移動すると、SelectionChanged がその場で呼ばれるようになり、複数の DataGridView の
+	連携が想定通りにいかなくなる（ある DataGridView の SelectionChanged において、
+	他の DataGridView の未初期化のプロパティにアクセスし、Null 参照が発生してしまう）。
+	そして、.NET 4.6 での CheckBox の事例がある以上、単純に元のままにしておけば（コンストラクタで
+	追加を行うことにするなら）完璧というわけでもなさそうであり、結局、その場で呼び出される
+	可能性を考慮した実装にするしかない。
+
+--
+
+◆確認ポイント
+
+Main やコンストラクタから OnLoad や OnShown に移動した初期化失敗時の処理に、
+Me.Close を追加しているか（Return や Exit Sub を検索）
+
+OnFormClosed に移動した、例外捕捉時の処理に、
+Return や Exit Sub が残っていないか。
+
+動的に用意するモーダルな Form の Dispose を行っているか。 -> ShowDialog を検索
+※ Close でプロセスを終了する類の Form でも、とりあえず呼んでおくことにしている。
+※ OpenFileDialog や SaveFileDialog などでは不要。
+
+OnFormClosed に移動したリソース破棄処理で NULL チェックをしているか。
+※ Main にあったときは、オブジェクト作成後にのみ実行されることになっていたコードが、そうでなくなる。
+
+DataTable が無い場合も、DataGridView の列設定は行うようにしているか。
+
+DataGridView の Rows が 0 件になる場合に、CurrentCell が Nothing になることを考慮しているか。
+
+--
+
+◆TODO:
+
+西日本運管の BaseConfig を東海運管に水平展開したい。
+できれば、Gica の ConfigBase を西日本運管と東海運管に水平展開するのが理想である。
+西日本運管の DummyKanshiban2 を東海運管に水平展開するにあたり、上記のいずれかが必須になる。
+
+メッセージボックスを表示し得るような初期処理をメインFormのOnShownなどに移動することで、
+メッセージボックスの所属の分かりやすさや、OpenFileDialog の表示位置などは良好になったが、
+メインウィンドウを表示した状態で設定ファイルの読み込みやデータベースへの
+アクセス（最悪の場合、接続待機）を行うことになってしまい、
+無条件に良い改造とは言い切れない。殆どのコントロールを非活性にした
+メインダイアログを表示させた（メッセージ処理を実行させている）状態で、
+ワーカースレッドにそれらを行わせるか、メッセージ処理開始前に
+それらを行わせるようにして、その際に表示するメッセージボックスや
+OpenFileDialogと、メインダイアログの初期表示位置を何等かの方法で合わせるか、
+何かしらの妥協点をみつけた方がよい。
+
+メッセージボックスのタイトルを、以下のように統一したい。
+・メインダイアログなどの中で出るものは、指定しない（「通知」や「警告」や「エラー」になる）
+・ダイアログが無い段階で表示せざるを得ないもの（二重起動禁止を告げるメッセージボックスなど）は、Lexis.FormTitle とする
+
+Gica の DatabaseTalker や Log や AlertBox を ExOpmg に水平展開したい。
+OPMGException などを廃止したい。
+	→ デッドロック対応でリファクタリングした東海幹線運管の DatabaseTalker は、
+	異常時の処理に関しては Gica の DatabaseTalker よりも強くなったはず。
+
+ClientAppはFileStreamからの１回のReadで必ず引数で指定した長さが読めることを前提にしている。
+ServerAppToNkanにおけるInitialSeqNumberのファイルの読出しも同じ。
+たぶん、ローカルファイルシステムから読み出す場合は事実上１回で読めるのだろうけれど、
+FileStream.Readの実装の規約を無視している。
+「.Read(」で検索。

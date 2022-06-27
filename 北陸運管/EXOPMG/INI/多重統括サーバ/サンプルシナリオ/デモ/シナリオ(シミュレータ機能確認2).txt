@@ -1,0 +1,33 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	000-000-0000-00 RegPassiveDllProc 2, *, *, -1,, FinishWithoutStoring; 3; 4; 1, 60s, 通信異常時処理, 通信異常時処理, プログラムDLL終了後処理
+	000-000-0000-00 WaitForPassiveDllToNak *, *, -1, 102^o^, 80s, OnError
+	000-000-0000-00 WaitForPassiveDll *, *, -1,, FinishWithoutStoring; 3; 4; 1, 60s, 100s, OnError, OnError, OnError
+	000-000-0000-00 RegPassiveDllProcToNak 3, *, *, -1, 101[-_-]zzz, プログラムDLL拒絶後処理
+	000-000-0000-00 Wait 30s
+	000-000-0000-00 UnregPassiveDllProc 3
+	000-000-0000-00 Wait 70s
+	000-000-0000-00 FinishScenario
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc プログラムDLL終了後処理
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 80s
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc プログラムDLL拒絶後処理
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

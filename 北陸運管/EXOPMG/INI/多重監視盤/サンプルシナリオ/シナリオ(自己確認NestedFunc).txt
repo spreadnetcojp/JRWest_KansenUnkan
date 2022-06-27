@@ -1,0 +1,6 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	#シナリオ開始
+	000-000-0000-00 Print abc$TrimBr<$ExecCmdFunc<cmd;/c;echo def1$TrimBr<$ExecCmdFunc<cmd;/c;echo$[;]def2;20s>>$TrimBr<$ExecCmdFunc<cmd;/c;echo def3;20s>;20s>>>ghi$TrimBr<$ExecCmdFunc<cmd;/c;echo$[;]jkl;20s>>
+EndProc

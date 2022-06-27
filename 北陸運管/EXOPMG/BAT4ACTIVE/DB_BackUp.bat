@@ -1,0 +1,1 @@
+sqlcmd -S .\EXOPMGDB -U exopmg -P exopmg -Q "BACKUP DATABASE INCA TO DISK = N'X:\EXOPMG\BAT4ACTIVE\archives\INCA.bak' WITH INIT"

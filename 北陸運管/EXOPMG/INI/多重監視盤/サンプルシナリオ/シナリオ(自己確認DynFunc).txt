@@ -1,0 +1,83 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	000-000-0000-00 Print 今日は$ExecDynFunc<Asm1.TimeUt.GetDayOfWeek; $Now<>>曜日です。
+	000-000-0000-00 Print 私の中には以下の端末が存在します。
+	000-000-0000-00 Print $ExecDynFunc<Asm1.Conf.GetTermCode; $MachineDir<>; %TI> $ExecDynFunc<Asm1.Conf.GetTermTitle; $MachineDir<>; %TI>
+EndProc
+
+VbCode Asm1
+	#Refer "ExOpmgCommon.dll"
+	#Refer "ExOpmgEkCommon.dll"
+	#Refer "ExOpmgMultiplexEkimuSim.exe"
+	Imports Microsoft.VisualBasic.FileIO
+	Imports System.Globalization
+	Imports System.IO
+	Imports System.Text
+	Imports JR.ExOpmg.Common
+	Imports JR.ExOpmg.MultiplexEkimuSim
+	#Include "サンプルデータ/MinimalLibsAndNamespaces.vb"
+
+	Class TimeUt
+	    Private Shared ReadOnly oDateTimeParseFormats As String() = {"yyyy/M/d H:m:s.fff", "yyyy/M/d H:m:s.ff", "yyyy/M/d H:m:s.f", "yyyy/M/d H:m:s", "yyyy/M/d H:m", "yyyy/M/d"}
+	    Private Shared ReadOnly sDayOfWeek As String() = {"日", "月", "火", "水", "木", "金", "土" }
+
+	    Public Shared Function GetDayOfWeek(ByVal s As String) As String
+	        Dim dt As DateTime = DateTime.ParseExact(s, oDateTimeParseFormats, CultureInfo.InvariantCulture, DateTimeStyles.None)
+	        Return sDayOfWeek(dt.DayOfWeek)
+	    End Function
+	End Class
+
+	Class Conf
+	    Public Shared Function GetServerAddr() As String
+	        Return Config.ServerIpAddr
+	    End Function
+
+	    <ThreadStatic()> Private Shared oTerms As List(Of String())
+
+	    Private Shared Function LoadTermMahines(ByVal sMachineDir As String) As List(Of String())
+	        Dim ret As New List(Of String())
+	        Using parser As New TextFieldParser(Path.Combine(sMachineDir, "#TermMachine.csv"), Encoding.Default)
+	            parser.TrimWhiteSpace = False
+	            parser.Delimiters = New String() {","}
+	            Dim lineCount As Integer = 1
+	            While Not parser.EndOfData
+	                Dim columns As String() = parser.ReadFields()
+	                If columns.Length < 10 Then
+	                    Throw New FormatException("#TermMachine.csv の" & lineCount.ToString() & "行目のカラム数が不正です。")
+	                End If
+
+	                Try
+	                    Dim code As EkCode
+	                    code.RailSection = Integer.Parse(columns(1))
+	                    code.StationOrder = Integer.Parse(columns(2))
+	                    code.Corner = Integer.Parse(columns(4))
+	                    code.Unit = Integer.Parse(columns(7))
+	                Catch ex As Exception
+	                    Throw New FormatException("#TermMachine.csv の" & lineCount.ToString() & "行目の機器コードが不正です。", ex)
+	                End Try
+
+	                ret.Add(columns)
+	                lineCount += 1
+	            End While
+	        End Using
+	        Return ret
+	    End Function
+
+	    Public Shared Function GetTermCode(ByVal sMachineDir As String, ByVal sTermIndex As String) As String
+	        If oTerms Is Nothing Then
+	            oTerms = LoadTermMahines(sMachineDir)
+	        End If
+	        Dim oFields As String() = oTerms(CInt(sTermIndex))
+	        Return oFields(1) & "_" & oFields(2) & "_" & oFields(4).PadLeft(4, "0"c) & "_" & oFields(7).PadLeft(2, "0"c)
+	    End Function
+
+	    Public Shared Function GetTermTitle(ByVal sMachineDir As String, ByVal sTermIndex As String) As String
+	        If oTerms Is Nothing Then
+	            oTerms = LoadTermMahines(sMachineDir)
+	        End If
+	        Dim oFields As String() = oTerms(CInt(sTermIndex))
+	        Return oFields(0) & "駅 " & oFields(3) & " " & oFields(5) & oFields(7) & "号機"
+	    End Function
+	End Class
+EndVbCode

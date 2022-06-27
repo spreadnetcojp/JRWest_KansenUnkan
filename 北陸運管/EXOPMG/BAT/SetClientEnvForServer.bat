@@ -1,0 +1,2 @@
+setx EXOPMG_LOG_DIR D:\EXOPMG\LOG -m
+setx EXOPMG_INIFILE_CLIENT C:\EXOPMG\INI\ExOpmgClientApp.ini -m

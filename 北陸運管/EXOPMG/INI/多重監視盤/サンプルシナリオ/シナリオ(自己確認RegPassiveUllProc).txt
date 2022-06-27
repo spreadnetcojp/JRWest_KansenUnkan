@@ -1,0 +1,25 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	#シナリオ開始
+	000-000-0000-00 RegDisconnectProc 5, 通信異常時処理
+	000-000-0000-00 RegPassiveUllProc 5, 異常データULL要求Comp.dat, 異常データULL要求Mask.dat, -1,, サンプルデータ\異常データ再収集.dat,, 0s, 60s, 通信異常時処理, 通信異常時処理, 異常データ送信後処理
+	070-003-0000-00 Connect OnComStarted, OnError
+	070-003-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 5s
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 Wait 5m
+	000-000-0000-00 FinishScenario
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 異常データ送信後処理
+	000-000-0000-00 Print 異常データ収集シーケンス Handler 終了
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

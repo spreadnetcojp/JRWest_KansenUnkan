@@ -1,0 +1,15 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	000-000-0000-00 RegPassiveDllProcToNak 22%TI, *, *, -1, 101[-_-]%TI, プログラムDLL拒絶後処理
+	000-000-0000-00 Evaluate $ExecCmdFunc<cmd;/c;copy C:\Users\z35273zz\Desktop\健康診断.txt $MachineDir<>\aaa%T3I.txt;20s>
+	000-000-0000-00 UnregPassiveDllProc 22%TI
+	000-000-0000-00 FinishScenario
+EndProc
+
+Proc プログラムDLL拒絶後処理
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc

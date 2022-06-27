@@ -1,0 +1,131 @@
+--------
+2017
+--------
+
+ExOpmgDummyKanshiban から下記を変更して作成。
+
+	_G_
+	GPG
+	改札機
+	改
+	Gate
+	監視盤
+	監
+	Kanshiban
+	Ksb
+
+	プログラムバージョン情報のフォーマッタ（ExProgramVersionInfoForY）
+	マスタバージョン情報のフォーマッタ（ExMasterVersionInfo）
+	エリア別の対応マスタ（ExConstants）
+
+	XlsField の書式に ASCII（URLエンコード）を追加
+	バージョンリストのパーサ（ProgramVersionListUtil）
+
+	統括フォーマットの機器接続状態（ConStatus）
+
+	マスタやプログラムの管理は端末ごとに独立させる
+
+	制御用シナリオ
+
+--
+
+マスタ配信状態を表示しているDataGridView2をダブルクリックして
+既に開いている「改札機マスタ」ウィンドウをActivateさせようとしたとき、
+アクセス違反が発生したらしき例外がスローされる。
+
+	System.AccessViolationException
+	保護されているメモリに読み取りまたは書き込み操作を行おうとしました。他のメモリが壊れていることが考えられます。
+	   場所 System.Windows.Forms.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+	   場所 System.Windows.Forms.NativeWindow.DefWndProc(Message& m)
+	   場所 System.Windows.Forms.ToolTip.WndProc(Message& msg)
+	   場所 System.Windows.Forms.ToolTip.ToolTipNativeWindow.WndProc(Message& m)
+	   場所 System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+	   場所 System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+	   場所 System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(Int32 dwComponentID, Int32 reason, Int32 pvLoopData)
+	   場所 System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+	   場所 System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+	   場所 System.Windows.Forms.Application.RunDialog(Form form)
+	   場所 System.Windows.Forms.Form.ShowDialog(IWin32Window owner)
+	   場所 System.Windows.Forms.Form.ShowDialog()
+	   場所 JR.ExOpmg.DummyKanshiban.MainClass.Main() 場所 C:\Users\z35273zz\Documents\運管\EXOPMGw\SRC\Tools\DummyKanshiban\MainClass.vb:行 39
+↓
+https://support.microsoft.com/ja-jp/help/2892345/system.accessviolationexception-occurs-with-tooltips-in-windows-forms
+http://aburasosogu.blogspot.jp/2017/03/vbnetdatagridviewformaccessviolationexc.html
+
+--
+
+通常の洗い替え（配下の窓処にある最古のものより新しければ残す）と
+ボタン押下による強めの洗い替え（配下の窓処にないものを全て削除）
+を区別する。
+
+--
+
+プログラム適用時の処理に「動作許可日チェック」を追加
+
+--
+
+バージョンリストに記載されたエリアとファイル名のエリアの比較機能を追加
+
+--
+
+バージョンリストに記載された代表バージョンとファイル名の代表バージョンの比較機能を追加
+
+--
+
+シナリオ(DummyTokatsu).txt において、運管からのプログラムDLL完了直後に余計なプログラム適用処理の呼び出しを記述していたのを削除
+
+--
+
+能動処理のボタンにツールチップを付与
+
+--
+
+媒体投入機能を追加
+
+--
+
+窓プロ配信処理において、適用リストのDL完了通知が「正常」以外（適用済み等）になる場合に、
+「窓処へのプログラム本体の配信」や「プログラム本体のDL完了通知の作成」をスキップする。
+これにより、内容が変更されたプログラム本体を受信した場合も、適用リストが変更されていない限りは、
+端末へ配信しないことになる。これは実機の動作（監視盤の制限に合わせた統括＆窓処の動作）と
+一致するはずである。
+
+--
+
+東京駅幹幹口エリアの受信可能マスタから北陸のマスタを除去。
+
+--
+
+窓処の受信可能種別でないマスタについて、
+マスタ適用処理で発生させるDL完了通知を「適用済」に変更。
+また、その際は、窓処に当該マスタを送信する（そうすることで、統括が受信したマスタと
+同じものを窓処が保持している体で、バージョン情報を作成する）ように変更。
+これは、窓処が自動改札機システムと同等の動作をすることを想定した偽装である。
+
+
+--------
+2017.12
+--------
+
+初回起動時に暗黙に投入されるダミープログラムの受信日時やハッシュ値などを“(不明)”と表示するように変更
+
+--
+
+MultiplexEkimuSim から受信するメッセージの仕様変更（Args追加）に対応
+
+--
+
+媒体投入や強めの洗い替えをシナリオから（メッセージで）実行可能にする。
+	リグレッションテストなどで、駅務機器媒体投入時の運管の
+	動作確認などを、シナリオから自動で実行可能にするため。
+
+↓
+
+CreateConStatus, AcceptFooBar, SweepFooBar を除く全要求を「統括」ではなく「窓処」に対する要求に変更（引数で正規表現の窓処IDを指定する）
+「機器構成読み取り」「～洗い替え」を除く全ての能動処理を「窓処」に対する処理に変更（右側のデータグリッドで選択されている窓処を処理対象とする）
+ClearMadoMas 要求を追加（引数で正規表現の窓処IDを指定する）
+「マスタクリア」ボタンを追加（右側のデータグリッドで選択されている窓処を処理対象とする）
+DirectInstallMadoPro 要求を追加（引数で「正規表現の窓処ID」と「CABファイル名」を指定する）
+SweepMadoMas 要求を追加（引数は無し）
+SweepMadoPro 要求を追加（引数は無し）
+

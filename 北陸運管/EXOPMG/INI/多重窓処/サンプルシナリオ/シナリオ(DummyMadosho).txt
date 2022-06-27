@@ -1,0 +1,45 @@
+'このファイルはExOpmgDummyMadosho.exeをコントロールするためのExOpmgMultiplexEkimuSim.exe用シナリオです。
+
+Proc Main
+	000-000-0000-00 RegPassiveUllProc 10, 異常データULL要求Comp.dat, 異常データULL要求Mask.dat, -1,, $MachineDir<>\#FaultDataForPassiveUll.dat,, 0s, 60s, 異常データULLにNAK返信後の処理, 通信異常時処理, 異常データULL終了後処理
+	000-000-0000-00 RegPassiveUllProc 11, 稼動データULL要求Comp.dat, 稼動データULL要求Mask.dat, -1,, $MachineDir<>\#KadoData.dat,, 0s, 60s, 稼動データULLにNAK返信後の処理, 通信異常時処理, 稼動データULL終了後処理
+	#Start
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）電源入
+	000-000-0000-00 RegDisconnectProc 9999, 通信異常時処理
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 WaitUntil 01:50:00
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）締切
+	'000-000-0000-00 ActiveOne サンプルデータ\操作ログ.dat,, 60s, OnError, OnError, OnError, False
+	'000-000-0000-00 ActiveOne サンプルデータ\業務前認証ログ.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 10s
+	000-000-0000-00 Print 窓処（駅%3R-%3S %Cコーナー %U号機）電源切
+	000-000-0000-00 UnregDisconnectProc 9999
+	000-000-0000-00 Disconnect
+	000-000-0000-00 WaitUntil 05:00:00
+	000-000-0000-00 GoTo Start
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 異常データULLにNAK返信後の処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 異常データULL終了後処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 稼動データULLにNAK返信後の処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 稼動データULL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyMadosho;CommitKadoData;20s>
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

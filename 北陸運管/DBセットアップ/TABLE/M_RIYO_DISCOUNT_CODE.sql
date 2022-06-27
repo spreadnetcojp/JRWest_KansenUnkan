@@ -1,0 +1,20 @@
+DROP TABLE M_RIYO_DISCOUNT_CODE;
+CREATE TABLE M_RIYO_DISCOUNT_CODE
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    割引コード binary(1) NOT NULL,
+    優先度 tinyint NOT NULL
+);
+
+ALTER TABLE M_RIYO_DISCOUNT_CODE
+ADD CONSTRAINT pk_M_RIYO_DISCOUNT_CODE PRIMARY KEY ( 割引コード);
+
+
+
+
+

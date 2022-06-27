@@ -1,0 +1,25 @@
+DROP TABLE M_MST_NAME;
+CREATE TABLE M_MST_NAME
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    MST_NO varchar(3) NOT NULL,
+    MODEL_CODE varchar(2) NOT NULL,
+    FILE_KBN varchar(3) NOT NULL,
+    DATA_KIND varchar(3) NOT NULL,
+    NAME varchar(30),
+    SHORT_NAME varchar(20),
+    USE_FLG varchar(1)
+);
+
+ALTER TABLE M_MST_NAME
+ADD CONSTRAINT pk_M_MST_NAME PRIMARY KEY ( MST_NO,MODEL_CODE,FILE_KBN,DATA_KIND);
+
+
+
+
+

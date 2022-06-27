@@ -1,0 +1,21 @@
+DROP TABLE S_PRG_DATA;
+CREATE TABLE S_PRG_DATA
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    FILE_NAME varchar(80) NOT NULL,
+    ELEMENT_ID varchar(20) NOT NULL,
+    ELEMENT_VERSION varchar(8) NOT NULL,
+    ELEMENT_NAME varchar(64) NOT NULL
+);
+
+
+CREATE INDEX idx_S_PRG_DATA ON S_PRG_DATA(FILE_NAME);
+
+
+
+

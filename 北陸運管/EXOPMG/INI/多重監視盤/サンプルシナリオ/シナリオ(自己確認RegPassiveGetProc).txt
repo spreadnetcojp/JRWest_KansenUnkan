@@ -1,0 +1,25 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	#シナリオ開始
+	000-000-0000-00 RegDisconnectProc 5, 通信異常時処理
+	000-000-0000-00 RegPassiveOneProc 1, ウォッチドッグ要求Comp.dat, ウォッチドッグ要求Mask.dat, -1,, ウォッチドッグ応答.dat, ウォッチドッグ応答後処理
+	070-003-0000-00 Connect OnComStarted, OnError
+	070-003-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 5s
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 Wait 5m
+	000-000-0000-00 FinishScenario
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc ウォッチドッグ応答後処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

@@ -1,0 +1,24 @@
+DROP TABLE M_TAB_BTN;
+CREATE TABLE M_TAB_BTN
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    TAB_ORDER int,
+    TAB_NAME varchar(24) NOT NULL,
+    ROW_ID int NOT NULL,
+    COLUMN_ID int NOT NULL,
+    RAIL_SECTION_CODE varchar(3),
+    STATION_ORDER_CODE varchar(3)
+);
+
+ALTER TABLE M_TAB_BTN
+ADD CONSTRAINT pk_M_TAB_BTN PRIMARY KEY ( TAB_NAME,ROW_ID,COLUMN_ID);
+
+
+
+
+

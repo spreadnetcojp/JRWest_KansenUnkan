@@ -1,0 +1,32 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+'周期的にランダムな利用データを作成するようExOpmgDummyKanshiban2.exeを制御します。
+
+Proc Main
+	#Start
+	000-000-0000-00 Print 監視盤（駅%3R-%3S %Cコーナー %U号機）電源入
+	000-000-0000-00 RegDisconnectProc 0, 通信異常時処理
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 RegTimerProc 0, 0, 30s, 利用データ送信処理
+	000-000-0000-00 WaitUntil 02:00:00
+	000-000-0000-00 Print 監視盤（駅%3R-%3S %Cコーナー %U号機）電源切
+	000-000-0000-00 UnregDisconnectProc 0
+	000-000-0000-00 Disconnect
+	000-000-0000-00 WaitUntil 05:00:00
+	000-000-0000-00 GoTo Start
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 利用データ送信処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban2;StoreRandRiyoData;20s>
+	000-000-0000-00 TryActiveUll AC, SK_USE.DAT, $MachineDir<>\#RiyoData.dat,, 0s, 30s, 30s, OnError, OnError, OnError, True
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

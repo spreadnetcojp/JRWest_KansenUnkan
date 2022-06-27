@@ -1,0 +1,20 @@
+DROP TABLE M_RIYO_TICKET_KIND;
+CREATE TABLE M_RIYO_TICKET_KIND
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    Œ”Ží binary(1) NOT NULL,
+    Œ”Ží‹æ•ª tinyint NOT NULL
+);
+
+ALTER TABLE M_RIYO_TICKET_KIND
+ADD CONSTRAINT pk_M_RIYO_TICKET_KIND PRIMARY KEY ( Œ”Ží);
+
+
+
+
+

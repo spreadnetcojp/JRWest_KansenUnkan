@@ -1,0 +1,68 @@
+'このファイルはExOpmgDummyTokatsu.exeをコントロールするためのExOpmgMultiplexEkimuSim.exe用シナリオです。
+
+Proc Main
+	000-000-0000-00 RegPassiveOneProc 0, 接続状態要求Comp.dat, 接続状態要求Mask.dat, -1, $ContextDir<>\ConStatusGetReq.dat, $ExecAppFunc<ExOpmgDummyTokatsu;CreateConStatus;20s>, 接続状態送信後処理
+	000-000-0000-00 RegPassiveDllProcToNak 9999, *, *, -1, 199BAD FILE NAME, 非対応DLLにNAK返信後の処理
+	000-000-0000-00 RegPassiveDllProc 20, 窓処用プログラム(本体込み)DLL要求Comp.dat, 窓処用プログラム(本体込み)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyTokatsu;AcceptMadoPro;30s>, 60s, 通信異常時処理, 通信異常時処理, 窓処用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 21, 窓処用プログラム(本体無し)DLL要求Comp.dat, 窓処用プログラム(本体無し)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyTokatsu;AcceptMadoPro;20s>, 60s, 通信異常時処理, 通信異常時処理, 窓処用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 30, 窓処用マスタ(本体込み)DLL要求Comp.dat, 窓処用マスタ(本体込み)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyTokatsu;AcceptMadoMas;20s>, 60s, 通信異常時処理, 通信異常時処理, 窓処用マスタDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 31, 窓処用マスタ(本体無し)DLL要求Comp.dat, 窓処用マスタ(本体無し)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyTokatsu;AcceptMadoMas;20s>, 60s, 通信異常時処理, 通信異常時処理, 窓処用マスタDLL終了後処理
+	#Start
+	000-000-0000-00 Print 統括（駅%3R-%3S %Cコーナー %U号機）電源入
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;ApplyMadoPro;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	000-000-0000-00 RegDisconnectProc 9999, 通信異常時処理
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 TryActiveOne $MachineDir<>\#MadoProDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveOne $MachineDir<>\#MadoMasDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;CreateMadoProVerInfo;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	000-000-0000-00 ActiveUll 87, P_Y_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\MadoProVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;CreateMadoMasVerInfo;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	000-000-0000-00 ActiveUll 8B, M_Y_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\MadoMasVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 WaitUntil 02:00:00
+	000-000-0000-00 Print 統括（駅%3R-%3S %Cコーナー %U号機）電源切
+	000-000-0000-00 UnregDisconnectProc 9999
+	000-000-0000-00 Disconnect
+	000-000-0000-00 WaitUntil 05:00:00
+	000-000-0000-00 GoTo Start
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 接続状態送信後処理
+EndProc
+
+Proc 非対応DLLにNAK返信後の処理
+	000-000-0000-00 Print 非対応なファイルのDLL要求にNAKを返信しました。
+	000-000-0000-00 Print このシナリオは、ファイル名の大文字小文字の違いに厳しく対応しているので、そのせいかもしれません。
+	000-000-0000-00 Print ルーズなファイル名に対応するには、RegPassiveDllProcに渡している電文マスク用ファイルを修正し、ファイル名の部分を完全にマスクするようにしてください。
+	000-000-0000-00 Print もしくは、大文字小文字のバリエーションを変えた電文比較用ファイルを用意し、RegPassiveDllProcの行を増やして、別のPassiveDll登録番号で登録してください。
+	000-000-0000-00 Disconnect
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 窓処用プログラムDLL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;DeliverMadoPro;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	000-000-0000-00 TryActiveOne $MachineDir<>\#MadoProDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveUll 87, P_Y_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\MadoProVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	'以下の2行は適用日が19000101（即時適用？）の行がある場合への配慮です。その場合にも実際の窓処が翌朝（再起動時）に適用を行うのであれば、不要です。
+	'000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;ApplyMadoPro;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	'000-000-0000-00 TryActiveUll 87, P_Y_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\MadoProVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 窓処用マスタDLL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyTokatsu;DeliverMadoMas;Y_[0-9]{6}_[0-9]{4}_[0-9]{2};20s>
+	000-000-0000-00 TryActiveOne $MachineDir<>\#MadoMasDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveUll 8B, M_Y_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\MadoMasVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

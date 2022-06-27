@@ -1,0 +1,31 @@
+'このファイルは多重駅務機器シミュレータ用シナリオのサンプルです。
+
+Proc Main
+	000-000-0000-00 WaitForPassiveOne 接続状態要求Comp.dat, 接続状態要求Mask.dat, -1,, サンプル接続状態応答.dat, 80s, OnError
+	000-000-0000-00 Wait 30s
+	000-000-0000-00 WaitForPassiveOneToNak 接続状態要求Comp.dat, 接続状態要求Mask.dat, -1,, 102(^o^), 80s, OnError
+	000-000-0000-00 RegPassiveOneProc 4, 接続状態要求Comp.dat, 接続状態要求Mask.dat, -1,, サンプル接続状態応答.dat, 接続状態送信後処理
+	000-000-0000-00 Wait 70s
+	000-000-0000-00 RegPassiveOneProcToNak 3, 接続状態要求Comp.dat, 接続状態要求Mask.dat, -1,, 101<-_->zzz, 接続状態NAK返信後処理
+	000-000-0000-00 Wait 70s
+	000-000-0000-00 UnregPassiveOneProc 3
+	000-000-0000-00 Wait 65s
+	000-000-0000-00 FinishScenario
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 接続状態送信後処理
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Wait 80s
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 接続状態NAK返信後処理
+	000-000-0000-00 ActiveOne 整時データ要求.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc

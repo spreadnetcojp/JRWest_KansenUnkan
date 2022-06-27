@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2F30535-D260-47EC-BA4F-374299A4ACED}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>JR.ExOpmg.ClientApp.My.MyApplication</StartupObject>
+    <RootNamespace>JR.ExOpmg.ClientApp</RootNamespace>
+    <AssemblyName>ExOpmgClientApp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\OBJ\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\OBJ\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>Off</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GrapeCity.Win.ElTabelleSheet.Design.v41, Version=4.1.2010.917, Culture=neutral, PublicKeyToken=a26afe6ac959b1f8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OBJ\GrapeCity.Win.ElTabelleSheet.Design.v41.dll</HintPath>
+    </Reference>
+    <Reference Include="GrapeCity.Win.ElTabelleSheet.v41, Version=4.1.2010.917, Culture=neutral, PublicKeyToken=a26afe6ac959b1f8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OBJ\GrapeCity.Win.ElTabelleSheet.v41.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="VBReport7.Document, Version=7.0.3270.1612, Culture=neutral, PublicKeyToken=7083b412cec9b2a4, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OBJ\VBReport7.Document.dll</HintPath>
+    </Reference>
+    <Reference Include="VBReport7.Viewer, Version=7.0.3270.1612, Culture=neutral, PublicKeyToken=be6d2ee4ac935b30, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OBJ\VBReport7.Viewer.dll</HintPath>
+    </Reference>
+    <Reference Include="VBReport7.Xls.Report, Version=7.0.3270.1612, Culture=neutral, PublicKeyToken=b3a206616ceec96d, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OBJ\VBReport7.Xls.Report.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Config.vb" />
+    <Compile Include="FrmBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBaseMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMainMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispFaultDataDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispFaultData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispConStatus.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispBesshuData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispCollectedData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispFunshitsuData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispFuseiJoshaData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispTrafficData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispKadoData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispKsbConfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntDispKyokoToppaData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMntMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstDispDelivery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstDispVersion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstDispVersionDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstInputData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstInputList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMstOrderDelivery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmOpeMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgDispDelivery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgDispVersion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgDispVersionDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgInputData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgInputList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrgOrderDelivery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysAreaMst.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysAreaMstAdd.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysAreaMstDelete.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysAreaMstUpdate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysIDMst.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysIDMstAdd.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysIDMstDelete.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysIDMstUpdate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysKadoDataMst.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysPatternMst.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysPatternMstAdd.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysPatternMstDelete.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysPatternMstUpdate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSysUnKanSetMng.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lexis.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OpClientTelegrapher.vb" />
+    <Compile Include="OpClientUtil.vb" />
+    <Compile Include="PrintViewer.designer.vb">
+      <DependentUpon>PrintViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PrintViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SweepUtil.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmBase.resx">
+      <DependentUpon>FrmBase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBaseMenu.resx">
+      <DependentUpon>FrmBaseMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMainMenu.resx">
+      <DependentUpon>FrmMainMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispFaultDataDetail.resx">
+      <DependentUpon>FrmMntDispFaultDataDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispFaultData.resx">
+      <DependentUpon>FrmMntDispFaultData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispConStatus.resx">
+      <DependentUpon>FrmMntDispConStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispBesshuData.resx">
+      <DependentUpon>FrmMntDispBesshuData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispCollectedData.resx">
+      <DependentUpon>FrmMntDispCollectedData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispFunshitsuData.resx">
+      <DependentUpon>FrmMntDispFunshitsuData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispFuseiJoshaData.resx">
+      <DependentUpon>FrmMntDispFuseiJoshaData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispTrafficData.resx">
+      <DependentUpon>FrmMntDispTrafficData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispKadoData.resx">
+      <DependentUpon>FrmMntDispKadoData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispKsbConfig.resx">
+      <DependentUpon>FrmMntDispKsbConfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntDispKyokoToppaData.resx">
+      <DependentUpon>FrmMntDispKyokoToppaData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMntMenu.resx">
+      <DependentUpon>FrmMntMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstDispDelivery.resx">
+      <DependentUpon>FrmMstDispDelivery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstDispVersion.resx">
+      <DependentUpon>FrmMstDispVersion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstDispVersionDetail.resx">
+      <DependentUpon>FrmMstDispVersionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstInputData.resx">
+      <DependentUpon>FrmMstInputData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstInputList.resx">
+      <DependentUpon>FrmMstInputList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstMenu.resx">
+      <DependentUpon>FrmMstMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMstOrderDelivery.resx">
+      <DependentUpon>FrmMstOrderDelivery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmOpeMenu.resx">
+      <DependentUpon>FrmOpeMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgDispDelivery.resx">
+      <DependentUpon>FrmPrgDispDelivery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgDispVersion.resx">
+      <DependentUpon>FrmPrgDispVersion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgDispVersionDetail.resx">
+      <DependentUpon>FrmPrgDispVersionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgInputData.resx">
+      <DependentUpon>FrmPrgInputData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgInputList.resx">
+      <DependentUpon>FrmPrgInputList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgMenu.resx">
+      <DependentUpon>FrmPrgMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrgOrderDelivery.resx">
+      <DependentUpon>FrmPrgOrderDelivery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysAreaMst.resx">
+      <DependentUpon>FrmSysAreaMst.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysAreaMstAdd.resx">
+      <DependentUpon>FrmSysAreaMstAdd.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysAreaMstDelete.resx">
+      <DependentUpon>FrmSysAreaMstDelete.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysAreaMstUpdate.resx">
+      <DependentUpon>FrmSysAreaMstUpdate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysIDMst.resx">
+      <DependentUpon>FrmSysIDMst.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysIDMstAdd.resx">
+      <DependentUpon>FrmSysIDMstAdd.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysIDMstDelete.resx">
+      <DependentUpon>FrmSysIDMstDelete.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysIDMstUpdate.resx">
+      <DependentUpon>FrmSysIDMstUpdate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysKadoDataMst.resx">
+      <DependentUpon>FrmSysKadoDataMst.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysMenu.resx">
+      <DependentUpon>FrmSysMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysPatternMst.resx">
+      <DependentUpon>FrmSysPatternMst.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysPatternMstAdd.resx">
+      <DependentUpon>FrmSysPatternMstAdd.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysPatternMstDelete.resx">
+      <DependentUpon>FrmSysPatternMstDelete.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysPatternMstUpdate.resx">
+      <DependentUpon>FrmSysPatternMstUpdate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSysUnKanSetMng.resx">
+      <DependentUpon>FrmSysUnKanSetMng.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintViewer.resx">
+      <DependentUpon>PrintViewer.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClientAppInternalMessages\ClientAppInternalMessages.vbproj">
+      <Project>{C47EBFC8-B734-41A7-9A6E-BC03B6EF9D5F}</Project>
+      <Name>ClientAppInternalMessages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ClientTelegrapher\ClientTelegrapher.vbproj">
+      <Project>{E8CF2FF2-A429-4D41-AADB-C49BC71C4F23}</Project>
+      <Name>ClientTelegrapher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Project>{74141547-99D4-4821-B3B7-E4422C221204}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBCommon\DBCommon.vbproj">
+      <Project>{33C8E56C-AA7D-4145-A9BB-E5E44EFB7852}</Project>
+      <Name>DBCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EkCommon\EkCommon.vbproj">
+      <Project>{47C1D9E8-6442-4251-BF62-11889A7C9C7F}</Project>
+      <Name>EkCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EkTelegrams\EkTelegrams.vbproj">
+      <Project>{B634E3BC-57A8-411B-8A51-7453E3EB7138}</Project>
+      <Name>EkTelegrams</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITelegrams\ITelegrams.vbproj">
+      <Project>{F7A64AB3-58DA-4D35-8FFA-C9DAF148B724}</Project>
+      <Name>ITelegrams</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InternalMessages\InternalMessages.vbproj">
+      <Project>{4F07E5B6-04D9-4CDE-A885-2C5F07991514}</Project>
+      <Name>InternalMessages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ClientDao\ClientDao.vbproj">
+      <Project>{DA4ABD54-8398-4881-9C5E-84AFF994A681}</Project>
+      <Name>ClientDao</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

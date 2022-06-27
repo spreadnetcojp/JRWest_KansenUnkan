@@ -1,0 +1,21 @@
+DROP TABLE M_AREA_DATA;
+CREATE TABLE M_AREA_DATA
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    MODEL_CODE varchar(2) NOT NULL,
+    AREA_NO varchar(2) NOT NULL,
+    AREA_NAME varchar(20)
+);
+
+ALTER TABLE M_AREA_DATA
+ADD CONSTRAINT pk_M_AREA_DATA PRIMARY KEY ( MODEL_CODE,AREA_NO);
+
+
+
+
+

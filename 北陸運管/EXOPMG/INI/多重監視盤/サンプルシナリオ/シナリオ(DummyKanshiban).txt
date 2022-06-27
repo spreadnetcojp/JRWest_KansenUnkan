@@ -1,0 +1,112 @@
+'このファイルはExOpmgDummyKanshiban.exeをコントロールするためのExOpmgMultiplexEkimuSim.exe用シナリオです。
+
+Proc Main
+	000-000-0000-00 RegPassiveDllProcToNak 9999, *, *, -1, 199BAD FILE NAME, 非対応DLLにNAK返信後の処理
+	000-000-0000-00 RegPassiveDllProc 10, 監視盤用プログラム(本体込み)DLL要求Comp.dat, 監視盤用プログラム(本体込み)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptKsbPro;30s>, 60s, 通信異常時処理, 通信異常時処理, 監視盤用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 11, 監視盤用プログラム(本体無し)DLL要求Comp.dat, 監視盤用プログラム(本体無し)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptKsbPro;20s>, 60s, 通信異常時処理, 通信異常時処理, 監視盤用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 20, 改札機用プログラム(本体込み)DLL要求Comp.dat, 改札機用プログラム(本体込み)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptGatePro;30s>, 60s, 通信異常時処理, 通信異常時処理, 改札機用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 21, 改札機用プログラム(本体無し)DLL要求Comp.dat, 改札機用プログラム(本体無し)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptGatePro;20s>, 60s, 通信異常時処理, 通信異常時処理, 改札機用プログラムDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 30, 改札機用マスタ(本体込み)DLL要求Comp.dat, 改札機用マスタ(本体込み)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptGateMas;20s>, 60s, 通信異常時処理, 通信異常時処理, 改札機用マスタDLL終了後処理
+	000-000-0000-00 RegPassiveDllProc 31, 改札機用マスタ(本体無し)DLL要求Comp.dat, 改札機用マスタ(本体無し)DLL要求Mask.dat, -1,, $ExecAppFunc<ExOpmgDummyKanshiban;AcceptGateMas;20s>, 60s, 通信異常時処理, 通信異常時処理, 改札機用マスタDLL終了後処理
+	000-000-0000-00 RegPassiveUllProc 10, 異常データULL要求Comp.dat, 異常データULL要求Mask.dat, -1,, $MachineDir<>\#FaultDataForPassiveUll.dat,, 0s, 60s, 異常データULLにNAK返信後の処理, 通信異常時処理, 異常データULL終了後処理
+	000-000-0000-00 RegPassiveUllProc 11, 稼動データULL要求Comp.dat, 稼動データULL要求Mask.dat, -1,, $MachineDir<>\#KadoData.dat,, 0s, 60s, 稼動データULLにNAK返信後の処理, 通信異常時処理, 稼動データULL終了後処理
+	#Start
+	000-000-0000-00 Print 監視盤（駅%3R-%3S %Cコーナー %U号機）電源入
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;ApplyKsbPro;20s>
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;ApplyGatePro;20s>
+	000-000-0000-00 RegDisconnectProc 9999, 通信異常時処理
+	000-000-0000-00 Connect OnComStarted, OnError
+	000-000-0000-00 ActiveOne 接続初期化要求.dat,, 60s, OnError, OnError, OnError, False
+	#OnComStarted
+	000-000-0000-00 TryActiveOne $MachineDir<>\#KsbProDlReflectReq_%3R%3S%4C%2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveOne $MachineDir<>\#GateProDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveOne $MachineDir<>\#GateMasDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CreateKsbProVerInfo;20s>
+	000-000-0000-00 ActiveUll AE, P_W_%3R%3S%4C%2UVER.DAT, $ContextDir<>\KsbProVerInfo_%3R%3S%4C%2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CreateGateProVerInfo;20s>
+	000-000-0000-00 ActiveUll AD, P_G_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\GateProVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CreateGateMasVerInfo;20s>
+	000-000-0000-00 ActiveUll AF, M_G_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\GateMasVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CreateConStatus;20s>
+	000-000-0000-00 ActiveOne $ContextDir<>\ConStatusPostReq.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 RegTimerProc 10, 0, 5m, 接続状態送信処理
+	000-000-0000-00 WaitUntil 02:00:00
+	000-000-0000-00 Print 監視盤（駅%3R-%3S %Cコーナー %U号機）電源切
+	000-000-0000-00 UnregDisconnectProc 9999
+	000-000-0000-00 Disconnect
+	000-000-0000-00 WaitUntil 05:00:00
+	000-000-0000-00 GoTo Start
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 非対応DLLにNAK返信後の処理
+	000-000-0000-00 Print 非対応なファイルのDLL要求にNAKを返信しました。
+	000-000-0000-00 Print このシナリオは、ファイル名の大文字小文字の違いに厳しく対応しているので、そのせいかもしれません。
+	000-000-0000-00 Print ルーズなファイル名に対応するには、RegPassiveDllProcに渡している電文マスク用ファイルを修正し、ファイル名の部分を完全にマスクするようにしてください。
+	000-000-0000-00 Print もしくは、大文字小文字のバリエーションを変えた電文比較用ファイルを用意し、RegPassiveDllProcの行を増やして、別のPassiveDll登録番号で登録してください。
+	000-000-0000-00 Disconnect
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 監視盤用プログラムDLL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;DeliverKsbPro;20s>
+	000-000-0000-00 TryActiveOne $MachineDir<>\#KsbProDlReflectReq_%3R%3S%4C%2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveUll AE, P_W_%3R%3S%4C%2UVER.DAT, $ContextDir<>\KsbProVerInfo_%3R%3S%4C%2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	'以下の2行は適用日が19000101（即時適用？）の場合への配慮です。その場合にも実際の監視盤が翌朝（再起動時）に適用を行うのであれば、不要です。
+	'000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;ApplyKsbPro;20s>
+	'000-000-0000-00 TryActiveUll AE, P_W_%3R%3S%4C%2UVER.DAT, $ContextDir<>\KsbProVerInfo_%3R%3S%4C%2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 改札機用プログラムDLL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;DeliverGatePro;20s>
+	000-000-0000-00 TryActiveOne $MachineDir<>\#GateProDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveUll AD, P_G_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\GateProVerInfo_%T3R%T3S%T4C%T2U.dat,,  80s, 60s,60s, OnError, OnError, OnError, False
+	'以下の2行は適用日が19000101（即時適用？）の行がある場合への配慮です。その場合にも実際の改札機が翌朝（再起動時）に適用を行うのであれば、不要です。
+	'000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;ApplyGatePro;20s>
+	'000-000-0000-00 TryActiveUll AD, P_G_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\GateProVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 改札機用マスタDLL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;DeliverGateMas;20s>
+	000-000-0000-00 TryActiveOne $MachineDir<>\#GateMasDlReflectReq_%T3R%T3S%T4C%T2U_*.dat,, 60s, OnError, OnError, OnError, True
+	000-000-0000-00 TryActiveUll AF, M_G_%T3R%T3S%T4C%T2UVER.DAT, $ContextDir<>\GateMasVerInfo_%T3R%T3S%T4C%T2U.dat,, 80s, 60s, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 異常データULLにNAK返信後の処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 異常データULL終了後処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 稼動データULLにNAK返信後の処理
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 稼動データULL終了後処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CommitKadoData;20s>
+	000-000-0000-00 ExitProc
+EndProc
+
+Proc 接続状態送信処理
+	000-000-0000-00 Evaluate $ExecAppFunc<ExOpmgDummyKanshiban;CreateConStatus;20s>
+	000-000-0000-00 ActiveOne $ContextDir<>\ConStatusPostReq.dat,, 60s, OnError, OnError, OnError, False
+	000-000-0000-00 ExitProc
+	#OnError
+	000-000-0000-00 AbortScenario
+EndProc
+
+Proc 通信異常時処理
+	000-000-0000-00 AbortScenario
+EndProc

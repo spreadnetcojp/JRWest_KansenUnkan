@@ -1,0 +1,21 @@
+DROP TABLE M_PASSAGE2;
+CREATE TABLE M_PASSAGE2
+(
+    INSERT_DATE datetime,
+    INSERT_USER_ID varchar(10),
+    INSERT_MACHINE_ID varchar(10),
+    UPDATE_DATE datetime,
+    UPDATE_USER_ID varchar(10),
+    UPDATE_MACHINE_ID varchar(10),
+    MODEL_CODE varchar(1) NOT NULL,
+    KIND int NOT NULL,
+    NAME varchar(20)
+);
+
+ALTER TABLE M_PASSAGE2
+ADD CONSTRAINT pk_M_PASSAGE2 PRIMARY KEY ( MODEL_CODE,KIND);
+
+
+
+
+
