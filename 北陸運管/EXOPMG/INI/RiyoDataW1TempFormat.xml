@@ -94,13 +94,14 @@
     <FIELD ID="89" xsi:type="NativeFixed" LENGTH="2"/>
     <FIELD ID="90" xsi:type="NativeFixed" LENGTH="2"/>
     <FIELD ID="91" xsi:type="NativeFixed" LENGTH="1"/>
-    <FIELD ID="92" xsi:type="NativeFixed" LENGTH="46"/>
-    <FIELD ID="93" xsi:type="NativeFixed" LENGTH="2"/>
-    <FIELD ID="94" xsi:type="NativeFixed" LENGTH="52"/>
-    <FIELD ID="95" xsi:type="NativeFixed" LENGTH="288"/>
+    <FIELD ID="92" xsi:type="NativeFixed" LENGTH="1"/>
+    <FIELD ID="93" xsi:type="NativeFixed" LENGTH="45"/>
+    <FIELD ID="94" xsi:type="NativeFixed" LENGTH="2"/>
+    <FIELD ID="95" xsi:type="NativeFixed" LENGTH="52"/>
     <FIELD ID="96" xsi:type="NativeFixed" LENGTH="288"/>
     <FIELD ID="97" xsi:type="NativeFixed" LENGTH="288"/>
     <FIELD ID="98" xsi:type="NativeFixed" LENGTH="288"/>
+    <FIELD ID="99" xsi:type="NativeFixed" LENGTH="288"/>
   </RECORD>
   <ROW>
     <COLUMN SOURCE="1" NAME="基本ヘッダーデータ種別" />
@@ -194,12 +195,13 @@
     <COLUMN SOURCE="89" NAME="ＳＦ利用区間２・利用駅２" />
     <COLUMN SOURCE="90" NAME="乗車始点駅" />
     <COLUMN SOURCE="91" NAME="券通しマスタ適用有無" />
-    <COLUMN SOURCE="92" NAME="予備１" />
-    <COLUMN SOURCE="93" NAME="サム値" />
-    <COLUMN SOURCE="94" NAME="未使用" />
-    <COLUMN SOURCE="95" NAME="券エンコード情報１枚目情報" />
-    <COLUMN SOURCE="96" NAME="券エンコード情報２枚目情報" />
-    <COLUMN SOURCE="97" NAME="券エンコード情報３枚目情報" />
-    <COLUMN SOURCE="98" NAME="券エンコード情報４枚目情報" />
+    <COLUMN SOURCE="92" NAME="新幹線IC利用" />
+    <COLUMN SOURCE="93" NAME="予備１" />
+    <COLUMN SOURCE="94" NAME="サム値" />
+    <COLUMN SOURCE="95" NAME="未使用" />
+    <COLUMN SOURCE="96" NAME="券エンコード情報１枚目情報" />
+    <COLUMN SOURCE="97" NAME="券エンコード情報２枚目情報" />
+    <COLUMN SOURCE="98" NAME="券エンコード情報３枚目情報" />
+    <COLUMN SOURCE="99" NAME="券エンコード情報４枚目情報" />
   </ROW>
 </BCPFORMAT>

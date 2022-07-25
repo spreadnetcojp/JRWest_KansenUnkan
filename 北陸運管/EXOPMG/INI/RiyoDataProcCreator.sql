@@ -1,3 +1,9 @@
+-- **********************************************************************
+--   変更履歴:
+--   Ver      日付        担当       コメント
+--   0.1      2020/11/30  (JS)井上   QR対応＋ICFREXIC(幹)対応
+-- **********************************************************************
+
 SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
 ${GO}
@@ -920,6 +926,8 @@ BEGIN
 		DEALLOCATE SrcRowCursorW1;
 	END;
 
+	-- Ver0.1  QR対応＋ICFREXIC(幹)対応  MOD START---------------------------------
+	-- [新幹線IC利用]を追加。変更前の履歴は残さない
 	MERGE
 	 INTO ${RiyoDataDatabaseName}.dbo.D_RIYO_DATA_W1_${Sta} AS Target
 	 USING D_RIYO_DATA_W1_TEMP_${Sta} AS Source
@@ -1023,6 +1031,7 @@ BEGIN
 	  [ＳＦ利用区間２・利用駅２],
 	  [乗車始点駅],
 	  [券通しマスタ適用有無],
+	  [新幹線IC利用],
 	  [予備１],
 	  [サム値],
 	  [未使用],
@@ -1123,6 +1132,7 @@ BEGIN
 	  Source.[ＳＦ利用区間２・利用駅２],
 	  Source.[乗車始点駅],
 	  Source.[券通しマスタ適用有無],
+	  Source.[新幹線IC利用],
 	  Source.[予備１],
 	  Source.[サム値],
 	  Source.[未使用],
@@ -1130,5 +1140,6 @@ BEGIN
 	  Source.[券エンコード情報２枚目情報],
 	  Source.[券エンコード情報３枚目情報],
 	  Source.[券エンコード情報４枚目情報]);
+	-- Ver0.1  QR対応＋ICFREXIC(幹)対応  MOD END---------------------------------
 END;
 ${GO}
